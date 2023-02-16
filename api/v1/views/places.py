@@ -41,6 +41,7 @@ def places(city_id):
         new_obj_dict = new_obj.to_dict()
         return make_response(jsonify(new_obj_dict), 201)
 
+
 @app_views.route('/places/<place_id>', methods=['GET', 'PUT', 'DELETE'])
 def placeid(place_id):
     """Retrieves/deletes or updates a single
@@ -57,7 +58,8 @@ def placeid(place_id):
             abort(400, "Not a JSON")
         json_data = request.get_json(silent=True)
         for key, val in json_data.items():
-            if key not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
+            if key not in ["id", "user_id", "city_id",
+                           "created_at", "updated_at"]:
                 setattr(obj, key, val)
         storage.save()
         return make_response(jsonify(obj.to_dict()), 200)
