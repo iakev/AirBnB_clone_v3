@@ -14,7 +14,7 @@ def states():
     """returns State object or collection"""
     if request.method == 'GET':
         states = []
-        objs = storage.all(cls)
+        objs = storage.all(State)
         for key, val in objs.items():
             obj_dict = val.to_dict()
             states.append(obj_dict)
