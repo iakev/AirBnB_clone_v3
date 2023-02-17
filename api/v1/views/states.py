@@ -7,8 +7,6 @@ from models import storage
 from models.state import State
 
 
-cls = 'State'
-
 
 @app_views.route('/states/', methods=['GET', 'POST'])
 @app_views.route('/states', methods=['GET', 'POST'])
@@ -38,16 +36,12 @@ def states():
 @app_views.route('/states/<state_id>', methods=['GET', 'PUT', 'DELETE'])
 def stateid(state_id):
     """Retrieves a single object if present or rase 404"""
+    obj = storage.get(State, state_id)
+    if obj is None:
+        abort(404)
     if request.method == 'GET':
-        obj = storage.get(cls, state_id)
-        if obj is None:
-            abort(404)
-        obj_dict = obj.to_dict()
-        return jsonify(obj_dict)
+        return jsonify(obj.to_dict())
     elif request.method == 'PUT':
-        obj = storage.get(cls, state_id)
-        if obj is None:
-            abort(404)
         json_data = request.get_json(silent=True)
         if json_data is None:
             abort(400, "Not a JSON")
@@ -57,9 +51,6 @@ def stateid(state_id):
         storage.save()
         return make_response(jsonify(obj.to_dict()), 200)
     else:
-        obj = storage.get(cls, state_id)
-        if obj is None:
-            abort(404)
         storage.delete(obj)
         storage.save()
         return make_response(jsonify({}), 200)
