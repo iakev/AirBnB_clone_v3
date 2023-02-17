@@ -22,9 +22,9 @@ def places(city_id):
             places.append(place.to_dict())
         return jsonify(places)
     else:
-        if not request.json:
-            abort(400, "Not a JSON")
         json_data = request.get_json(silent=True)
+        if json_data is None:
+            abort(400, "Not a JSON")
         user_id = json_data.get('user_id')
         if not user_id:
             abort(400, "Missing user_id")
@@ -34,7 +34,7 @@ def places(city_id):
         name = json_data.get("name")
         if not name:
             abort(400, "Missing name")
-        new_obj["city_id"] = city_id
+        json_data["city_id"] = city_id
         new_obj = Place(**json_data)
         storage.new(new_obj)
         storage.save()
