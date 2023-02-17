@@ -64,7 +64,7 @@ class FileStorage:
         for clss in classes:
             if cls == classes[clss]:
                 obj_key = clss + "." + id
-                obj = self.__objects[obj_key]
+                obj = self.__objects.get(obj_key)
                 return obj
         return None
 
