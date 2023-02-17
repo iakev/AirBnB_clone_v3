@@ -23,17 +23,17 @@ def places(city_id):
         return jsonify(places)
     elif request.method == 'POST':
         if not request.json:
-            abort(400, "Not a JSOM")
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
         json_data = request.get_json(silent=True)
         user_id = json_data.get('user_id')
         if not user_id:
-            abort(400, "Missing user_id")
+            return make_response(jsonify({'error': "Missing user_id"}), 400)
         user = storage.get(User, user_id)
         if not user:
             abort(404)
         name = json_data.get("name")
         if not name:
-            abort(400, "Missing name")
+            return make_response(jsonify({'error': "Missing name"}), 400)
         json_data["city_id"] = city_id
         new_obj = Place(**json_data)
         new_obj.save()
