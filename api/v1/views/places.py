@@ -21,7 +21,7 @@ def places(city_id):
         for place in city.places:
             places.append(place.to_dict())
         return jsonify(places)
-    else:
+    """else:
         json_data = request.get_json(silent=True)
         if json_data is None:
             abort(400, "Not a JSON")
@@ -37,8 +37,7 @@ def places(city_id):
         json_data["city_id"] = city_id
         new_obj = Place(**json_data)
         new_obj.save()
-        new_obj_dict = new_obj.to_dict()
-        return make_response(jsonify(new_obj_dict), 201)
+        return make_response(jsonify(new_obj.to_dict()), 201)"""
 
 
 @app_views.route('/places/<place_id>', methods=['GET', 'PUT', 'DELETE'])
