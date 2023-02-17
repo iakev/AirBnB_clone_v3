@@ -22,9 +22,9 @@ def places(city_id):
             places.append(place.to_dict())
         return jsonify(places)
     elif request.method == 'POST':
-        if not request.json:
-            return make_response(jsonify({'error': "Not a JSON"}), 400)
         json_data = request.get_json(silent=True)
+        if not json_data:
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
         user_id = json_data.get('user_id')
         if not user_id:
             return make_response(jsonify({'error': "Missing user_id"}), 400)
