@@ -36,8 +36,7 @@ def places(city_id):
             abort(400, "Missing name")
         json_data["city_id"] = city_id
         new_obj = Place(**json_data)
-        storage.new(new_obj)
-        storage.save()
+        new_obj.save()
         new_obj_dict = new_obj.to_dict()
         return make_response(jsonify(new_obj_dict), 201)
 
