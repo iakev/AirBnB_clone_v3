@@ -21,15 +21,15 @@ def places(city_id):
         for place in city.places:
             places.append(place.to_dict())
         return jsonify(places)
-    """else:
+    elif request.method == 'POST':
+        if not request.json:
+            abort(400, "Not a JSOM")
         json_data = request.get_json(silent=True)
-        if json_data is None:
-            abort(400, "Not a JSON")
         user_id = json_data.get('user_id')
         if not user_id:
             abort(400, "Missing user_id")
         user = storage.get(User, user_id)
-        if user is None:
+        if not user:
             abort(404)
         name = json_data.get("name")
         if not name:
@@ -37,7 +37,7 @@ def places(city_id):
         json_data["city_id"] = city_id
         new_obj = Place(**json_data)
         new_obj.save()
-        return make_response(jsonify(new_obj.to_dict()), 201)"""
+        return make_response(jsonify(new_obj.to_dict()), 201)
 
 
 @app_views.route('/places/<place_id>', methods=['GET', 'PUT', 'DELETE'])
